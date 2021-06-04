@@ -9,20 +9,22 @@ export enum DateFormatStyle {
     LONG
 }
 
-const unPad = (digits: string) => digits.replace(/^0*/, "");
-
 export type YMDFormatter = (ymd: YMD) => string;
 
-type DefaultYMDFormatKey = "MDY" | "MDY_NO_PAD" | "LONG";
+type DefaultYMDFormatKey = "YMD" | "MDY" | "MDY_NO_PAD" | "LONG";
 
 export const DefaultYMDFormatters: Record<DefaultYMDFormatKey, YMDFormatter> = {
+    YMD: (ymd) => {
+        const {y, m, d} = ymd;
+        return [y, m, d].map(v => `${v}`.padStart(2, "0")).join("-");
+    },
     MDY: (ymd) => {
-        const [y, m, d] = ymd.ymdString.split("-");
-        return [m, d, y].join("/")
+        const {y, m, d} = ymd;
+        return [m, d, y].map(v => `${v}`.padStart(2, "0")).join("/");
     },
     MDY_NO_PAD: (ymd) => {
-        const [y, m, d] = ymd.ymdString.split("-");
-        return [m, d, y].map(v => unPad(v)).join("/")
+        const {y, m, d} = ymd;
+        return [m, d, y].map(v => `${v}`).join("/");
     },
     LONG: (ymd) => {
         const utcString = ymd.toDate().toUTCString();
@@ -33,13 +35,28 @@ export const DefaultYMDFormatters: Record<DefaultYMDFormatKey, YMDFormatter> = {
 
 /** work with just a date without having to think about timezones (and without the bulk of momentjs) */
 export class YMD {
-    /**
-     * @param ymdString date string formatted like "1999-12-31"
-     */
-    constructor(public ymdString: string) {}
+    public y: number = 1970;
+    public m: number = 1;
+    public d: number = 1;
+    constructor(ymd: string | {y: number, m: number, d: number}) {
+        if (ymd == null) return;
+        if (typeof ymd == "string") {
+            if (ymd.length === 10) {
+                const [y, m, d] = ymd.split("-").map(v => parseInt(v));
+                Object.assign(this, {y, m, d});
+            }
+        }
+        else {
+            Object.assign(this, ymd);
+        }
+    }
+
+    toString(formatKey: DefaultYMDFormatKey = "YMD") {
+        return DefaultYMDFormatters[formatKey](this);
+    }
 
     toDate() {
-        return new Date(`${this.ymdString}T00:00Z`);
+        return new Date(`${this.toString()}T00:00Z`);
     }
 
     static fromDate(date: Date) {
