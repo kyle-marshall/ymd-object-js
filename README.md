@@ -33,44 +33,61 @@ In summary, this package just helps you get the date right.
 
 #### install with npm
 
-`npm install ymd-object`
+```shell
+npm install ymd-object
+```
 
 <br>
 
 #### import YMD
 
-`import { YMD } from "ymd-object"`
 
+```javascript 
+import { YMD } from "ymd-object"`
+```
 *or with require*
 
-`const { YMD } = require("ymd-object")`
-
+```javascript 
+const { YMD } = require("ymd-object")`
+```
 <br>
 
-#### create a date
+#### Create a YMD object
+<br>
 
-*from a ymd string*
+*from a string formatted like YYYY-MM-DD*
 
-`const myDate = new YMD("2020-01-31");`
+```javascript 
+const myDate = new YMD("2020-01-31");
+```
 
 *or from a simple object*
 
-`const myDate = new YMD({y: 2020, m: 1, d: 31})`
+```javascript 
+const myDate = new YMD({y: 2020, m: 1, d: 31})
+```
 
 *or from a vanilla js Date (optional 2nd parameter utc defaults to true)*
 
-`const myDate = YMD.fromDate(someDate) // uses UTC date of someDate`
+```javascript 
+const myDate = YMD.fromDate(someDate) // uses UTC date of someDate`
+```
 
-`const myDate = YMD.fromDate(new Date(), false) // uses current local date`
-
+```javascript 
+const myDate = YMD.fromDate(new Date(), false) // uses current local date`
+```
 *or using current date (optional 2nd parameter utc defaults to true)*
 
-`const myDate = YMD.today() // uses current UTC date`
-`const myDate = YMD.today(false) // uses current local date`
+```javascript 
+const myDate = YMD.today() // uses current UTC date`
+```
 
+```javascript 
+const myDate = YMD.today(false) // uses current local date`
+```
 <br>
 
-#### get or set year / month / date
+#### Get or set year / month / date
 
 
 ```javascript
@@ -87,7 +104,7 @@ myDate.setFromDate(someDate, false) // change date using a vanilla js Date (loca
 
 <br>
 
-#### convert to a vanilla js Date (set at midnight UTC unless optional utc param is false)
+#### Convert to a vanilla js Date (set at midnight UTC unless optional utc param is false)
 
 ```javascript
 myDate.toDate() // 2020-01-31T00:00:00.000Z
@@ -101,7 +118,7 @@ myDate.toDate(false).getDate() // 31 (local date)
 
 <br>
 
-#### formatting
+#### Formatting
 
 `ymd-object` provides some minimal date formatting options
 
@@ -117,6 +134,11 @@ myDate.toString("LONG") // returns "Fri, 31 Jan 2020"
 
 You can also simply combine the static "from" methods with the "toString" method if you don't want to keep the YMD object around:
 
-`YMD.fromString("2020-01-31").toString("LONG") // returns "Fri, 31 Jan 2020"`
+```javascript
+YMD.fromString("2020-01-31").toString("LONG") // returns "Fri, 31 Jan 2020"
+```
 
-The formatting feature may be expanded in the future to allow formatting with special strings to define the format e.g. maybe you are weird and like hashtags instead of dashes so you use `myDate.toString("YYYY#MM#DD")`.
+The formatting feature may be expanded in the future to allow formatting with special strings to define the format e.g. maybe you are weird and like hashtags instead of dashes so you would use
+```javascript 
+myDate.toString("YYYY#MM#DD") // DOESN'T WORK YET!
+```
