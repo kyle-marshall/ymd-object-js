@@ -26,6 +26,10 @@ In summary, the YMD class is a tiny library to help you get the Date right. Many
 
 ## How to use it
 
+#### npm install
+
+`npm install ymd-object`
+
 #### import YMD
 
 `import { YMD } from "ymd-object"`
@@ -34,36 +38,36 @@ In summary, the YMD class is a tiny library to help you get the Date right. Many
 
 -- from a ymd string --
 
-`const startDate = new YMD("2020-01-31");`
+`const myDate = new YMD("2020-01-31");`
 
 -- or from a simple object --
 
-`const startDate = new YMD({y: 2020, m: 1, d: 31})`
+`const myDate = new YMD({y: 2020, m: 1, d: 31})`
 
 -- or from a vanilla js Date --
 
-`const startDate = YMD.fromDate(someDate)`
+`const myDate = YMD.fromDate(someDate)`
 
 #### get or set year / month / date
 
-`const { y, m, d } = startDate; // deconstruct a YMD object`
+`const { y, m, d } = myDate; // deconstruct a YMD object`
 
-`startDate.y = 1999; // change a YMD object`
+`myDate.y = 1999; // change a YMD object`
 
 #### convert to a vanilla js Date (set at midnight UTC)
 
-`startDate.toDate() // 2020-01-31T00:00:00.000Z`
+`myDate.toDate() // 2020-01-31T00:00:00.000Z`
 
 #### formatting
 
 ymd-object provides some minimal date formatting options
 
-`startDate.toString() // returns "2020-01-31"`
+`myDate.toString() // returns "2020-01-31"`
 
-`startDate.toString("MDY") // returns "01/31/2020"`
+`myDate.toString("MDY") // returns "01/31/2020"`
 
-`startDate.toString("MDY_NO_PAD") // returns "1/31/2020"`
+`myDate.toString("MDY_NO_PAD") // returns "1/31/2020"`
 
-`startDate.toString("LONG") // returns "Fri, 31 Jan 2020"`
+`myDate.toString("LONG") // returns "Fri, 31 Jan 2020"`
 
 The formatting feature may be expanded in the future.
