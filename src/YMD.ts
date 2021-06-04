@@ -24,24 +24,40 @@ export const DefaultYMDFormatters: Record<DefaultYMDFormatKey, YMDFormatter> = {
 const YMD_STRING_PATTERN = /^[1-2][0-9]{3}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))$/;
 const ERR_BAD_YMD_STRING = "Bad YMD string format.";
 
+// something which can be passed into the YMD constructor
+export type YMDConstructable = string | { y: number, m: number, d: number };
+
 export class YMD {
     public y: number = 1970;
     public m: number = 1;
     public d: number = 1;
-    constructor(ymd: string | {y: number, m: number, d: number}) {
+
+    /**
+     * construct a YMD using a string like "2020-01-31"
+     * or an object like {y: 2020, m: 1, d: 31 }
+     * 
+     * Defaults to 1970-01-01
+     * 
+     * If you want to get today's date or create from a vanilla js Date, 
+     * use static methods `today()` or `fromDate(date: Date, utc?: boolean)` instead
+     * @param ymd 
+     * @returns 
+     */
+    constructor(ymd?: YMDConstructable) {
         if (ymd == null) return;
         if (typeof ymd == "string") {
-            if (!YMD_STRING_PATTERN.test(ymd)) {
-                throw new Error(ERR_BAD_YMD_STRING);
-            }
-            const [y,m,d] = ymd.split("-").map(v => parseInt(v));
-            Object.assign(this, {y, m, d});
+            this.setFromString(ymd);
         }
         else {
-            Object.assign(this, ymd);
+            const {y, m, d} = ymd;
+            Object.assign(this, {y, m, d});
         }
     }
 
+    /** 
+     * converts the YMD to a string
+     * (default format is like "2020-01-31")
+     */
     toString(formatKey: DefaultYMDFormatKey = "YMD"): string {
         return DefaultYMDFormatters[formatKey](this);
     }
@@ -57,16 +73,56 @@ export class YMD {
     }
 
     /**
+     * set values from a string formatted like "2020-01-31"
+     */
+    setFromString(ymdString: string) {
+        if (!YMD_STRING_PATTERN.test(ymdString)) {
+            throw new Error(ERR_BAD_YMD_STRING);
+        }
+        const [y,m,d] = ymdString.split("-").map(v => parseInt(v));
+        Object.assign(this, {y, m, d});
+    }
+
+    /**
+     * set values from a vanilla js Date object
+     * @param date some Date object
+     * @param utc set false if you want to use the local date instead of UTC date
+     */
+    setFromDate(date: Date, utc: boolean = true) {
+        if (utc) {
+            this.setFromString(date.toISOString().split("T")[0]);
+            return;
+        }
+        this.y = date.getFullYear();
+        this.m = date.getMonth() + 1;
+        this.d = date.getDate();
+    }
+
+    /**
+     * create a YMD object from a vanilla js Date object
      * @param date some Date object
      * @param utc set false if you want to use the local date instead of UTC date
      */
     static fromDate(date: Date, utc: boolean = true): YMD {
-        if (utc) return new YMD(date.toISOString().split("T")[0]);
-        return new YMD({
-            y: date.getFullYear(),
-            m: date.getMonth() + 1,
-            d: date.getDate()
-        });
+        const ymd = new YMD();
+        ymd.setFromDate(date, utc);
+        return ymd;
+    }
+
+    /**
+     * create a YMD object from a string formatted like "2020-01-31"
+     */
+    static fromString(ymdString: string): YMD {
+        const ymd = new YMD();
+        ymd.setFromString(ymdString);
+        return ymd;
+    }
+
+    /**
+     * @param utc set false if you want to use the local date instead of UTC date
+     */
+    static today(utc: boolean = true) {
+        return YMD.fromDate(new Date(), utc);
     }
 
     static getDefaultFormatter(key: DefaultYMDFormatKey): YMDFormatter {

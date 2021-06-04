@@ -43,11 +43,22 @@ In summary, this package just helps you get the date right.
 
 `const myDate = YMD.fromDate(new Date(), false) // uses current local date`
 
+-- or using current date (optional 2nd parameter utc defaults to true) --
+
+`const myDate = YMD.today() // uses current UTC date`
+`const myDate = YMD.today(false) // uses current local date`
+
 #### get or set year / month / date
 
 `const { y, m, d } = myDate; // deconstruct a YMD object`
 
 `myDate.y = 1999; // change a YMD object`
+
+`myDate.setFromString("1999-10-20") // change date using a string`
+
+`myDate.setFromDate(someDate) // change date using a vanilla js Date (UTC date)`
+
+`myDate.setFromDate(someDate, false) // change date using a vanilla js Date (local date)`
 
 #### convert to a vanilla js Date (set at midnight UTC unless optional utc param is false)
 
@@ -70,5 +81,9 @@ In summary, this package just helps you get the date right.
 `myDate.toString("MDY_NO_PAD") // returns "1/31/2020"`
 
 `myDate.toString("LONG") // returns "Fri, 31 Jan 2020"`
+
+You can also simply combine the static "from" methods with the "toString" method if you don't want to keep the YMD object around:
+
+`YMD.fromString("2020-01-31").toString("LONG") // returns "Fri, 31 Jan 2020"`
 
 The formatting feature may be expanded in the future.
