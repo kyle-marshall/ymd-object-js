@@ -1,6 +1,6 @@
 ### Preface
 
-I recommend using [https://github.com/iamkun/dayjs/](dayjs) for your project.
+I recommend using [dayjs](https://github.com/iamkun/dayjs/) for your project.
 
 While I may continue to expand `ymd-object` for fun, I made it as a minimal alternative for one feature that Moment.js made convenient for me. This was before I knew about dayjs.
 
@@ -63,7 +63,7 @@ In summary, this package just helps you get the date right.
 
 `const myDate = YMD.fromDate(new Date(), false) // uses current local date`
 
--- or using current date (optional 2nd parameter utc defaults to true) --
+*or using current date (optional 2nd parameter utc defaults to true)*
 
 `const myDate = YMD.today() // uses current UTC date`
 `const myDate = YMD.today(false) // uses current local date`
