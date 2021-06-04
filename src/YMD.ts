@@ -1,4 +1,3 @@
-
 export type YMDFormatter = (ymd: YMD) => string;
 
 type DefaultYMDFormatKey = "YMD" | "MDY" | "MDY_NO_PAD" | "LONG";
@@ -25,7 +24,6 @@ export const DefaultYMDFormatters: Record<DefaultYMDFormatKey, YMDFormatter> = {
 const YMD_STRING_PATTERN = /^[1-2][0-9]{3}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))$/;
 const ERR_BAD_YMD_STRING = "Bad YMD string format.";
 
-/** work with just a date without having to think about timezones (and without the bulk of momentjs) */
 export class YMD {
     public y: number = 1970;
     public m: number = 1;

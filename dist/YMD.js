@@ -21,7 +21,6 @@ exports.DefaultYMDFormatters = {
 };
 var YMD_STRING_PATTERN = /^[1-2][0-9]{3}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))$/;
 var ERR_BAD_YMD_STRING = "Bad YMD string format.";
-/** work with just a date without having to think about timezones (and without the bulk of momentjs) */
 var YMD = /** @class */ (function () {
     function YMD(ymd) {
         this.y = 1970;

@@ -1,7 +1,6 @@
 export declare type YMDFormatter = (ymd: YMD) => string;
 declare type DefaultYMDFormatKey = "YMD" | "MDY" | "MDY_NO_PAD" | "LONG";
 export declare const DefaultYMDFormatters: Record<DefaultYMDFormatKey, YMDFormatter>;
-/** work with just a date without having to think about timezones (and without the bulk of momentjs) */
 export declare class YMD {
     y: number;
     m: number;
