@@ -11,18 +11,11 @@ Confusing results may arise when using the standard Date object for dates (e.g. 
 If you construct a normal `Date` as shown above, you sometimes find yourself facing off by one errors when you try to figure out what day it is, depending on your timezone.
 For example, `(new Date("2020-01-01")).getDate()` may return `31`.
 
-Oh my! It would be nice to not think about that.
-The `YMD` class is here to make it hard to make such a mistake. It stores the year month and date as numbers exactly as you want, and provides some common formatting options and a `toDate` function which creates a date set to midnight UTC time instead of local time.
+In this case, the correct solution would have been to use `getUTCDate` instead of `getDate`.
 
-In summary, this tiny package helps you get the Date right.
+It would be nice to not think about the time components at all. The `YMD` class is here to make it hard to make any mistake related to time zones. It stores the year month and date as numbers exactly as you want, and provides some common formatting options and a `toDate` function which creates a date set to midnight UTC time instead of local time.
 
----
-
-Note: if you don't want to use this package, one workaround is to construct Dates like `new Date("2020-01-01T00:00Z")` when you are not interested in the time components. This is how the `toDate` function of `YMD` works.
-
-Another alternative is the Moment.js library, but this may not be ideal since it is a large package.
-
----
+In summary, this tiny package helps you get the date right.
 
 ## How to use it
 
@@ -58,7 +51,7 @@ Another alternative is the Moment.js library, but this may not be ideal since it
 
 `myDate.toDate() // 2020-01-31T00:00:00.000Z`
 
-`myDate.toDate().getDate() // 31 (no off by one error)`
+`myDate.toDate().getUTCDate() // 31`
 
 #### formatting
 

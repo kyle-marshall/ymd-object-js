@@ -43,11 +43,30 @@ var YMD = /** @class */ (function () {
         if (formatKey === void 0) { formatKey = "YMD"; }
         return exports.DefaultYMDFormatters[formatKey](this);
     };
-    YMD.prototype.toDate = function () {
-        return new Date(this.toString() + "T00:00Z");
+    /**
+     * @param date some Date object
+     * @param utc set false if you want to create Date at midnight local time instead of UTC
+     */
+    YMD.prototype.toDate = function (utc) {
+        if (utc === void 0) { utc = true; }
+        var iso = this.toString() + "T00:00Z";
+        if (utc)
+            return new Date(iso);
+        return new Date(iso.substring(0, iso.length - 1));
     };
-    YMD.fromDate = function (date) {
-        return new YMD(date.toISOString().split("T")[0]);
+    /**
+     * @param date some Date object
+     * @param utc set false if you want to use the local date instead of UTC date
+     */
+    YMD.fromDate = function (date, utc) {
+        if (utc === void 0) { utc = true; }
+        if (utc)
+            return new YMD(date.toISOString().split("T")[0]);
+        return new YMD({
+            y: date.getFullYear(),
+            m: date.getMonth() + 1,
+            d: date.getDate()
+        });
     };
     YMD.getDefaultFormatter = function (key) {
         return exports.DefaultYMDFormatters[key];

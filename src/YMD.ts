@@ -42,19 +42,34 @@ export class YMD {
         }
     }
 
-    toString(formatKey: DefaultYMDFormatKey = "YMD") {
+    toString(formatKey: DefaultYMDFormatKey = "YMD"): string {
         return DefaultYMDFormatters[formatKey](this);
     }
 
-    toDate() {
-        return new Date(`${this.toString()}T00:00Z`);
+    /**
+     * @param date some Date object
+     * @param utc set false if you want to create Date at midnight local time instead of UTC
+     */
+    toDate(utc: boolean = true): Date {
+        const iso = `${this.toString()}T00:00Z`;
+        if (utc) return new Date(iso);
+        return new Date(iso.substring(0, iso.length-1));
     }
 
-    static fromDate(date: Date) {
-        return new YMD(date.toISOString().split("T")[0]);
+    /**
+     * @param date some Date object
+     * @param utc set false if you want to use the local date instead of UTC date
+     */
+    static fromDate(date: Date, utc: boolean = true): YMD {
+        if (utc) return new YMD(date.toISOString().split("T")[0]);
+        return new YMD({
+            y: date.getFullYear(),
+            m: date.getMonth() + 1,
+            d: date.getDate()
+        });
     }
 
-    static getDefaultFormatter(key: DefaultYMDFormatKey) {
+    static getDefaultFormatter(key: DefaultYMDFormatKey): YMDFormatter {
         return DefaultYMDFormatters[key];
     }
 }
