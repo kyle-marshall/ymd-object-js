@@ -13,9 +13,9 @@ For example, `(new Date("2020-01-01")).getDate()` may return `31`.
 
 In this case, the correct solution would have been to use `getUTCDate` instead of `getDate`.
 
-It would be nice to not think about the time components at all. The `YMD` class is here to make it hard to make any mistake related to time zones. It stores the year month and date as numbers exactly as you want, and provides some common formatting options and a `toDate` function which creates a date set to midnight UTC time instead of local time.
+In many situations it would be nicer to not think about the time components at all. The `YMD` class is here to make it harder to make mistakes related to time zones. It stores the year month and date as plain old numbers and provides some common formatting options and a `toDate` function which creates a date set to midnight UTC or local time (UTC by default).
 
-In summary, this tiny package helps you get the date right.
+In summary, this package just helps you get the date right.
 
 ## How to use it
 
@@ -37,9 +37,11 @@ In summary, this tiny package helps you get the date right.
 
 `const myDate = new YMD({y: 2020, m: 1, d: 31})`
 
--- or from a vanilla js Date --
+-- or from a vanilla js Date (optional 2nd parameter utc defaults to true) --
 
-`const myDate = YMD.fromDate(someDate)`
+`const myDate = YMD.fromDate(someDate) // uses UTC date of someDate`
+
+`const myDate = YMD.fromDate(new Date(), false) // uses current local date`
 
 #### get or set year / month / date
 
@@ -47,15 +49,19 @@ In summary, this tiny package helps you get the date right.
 
 `myDate.y = 1999; // change a YMD object`
 
-#### convert to a vanilla js Date (set at midnight UTC)
+#### convert to a vanilla js Date (set at midnight UTC unless optional utc param is false)
 
 `myDate.toDate() // 2020-01-31T00:00:00.000Z`
 
 `myDate.toDate().getUTCDate() // 31`
 
+`myDate.toDate(false) // 2020-01-31T08:00:00.000Z (for me; depends on time zone)`
+
+`myDate.toDate(false).getDate() // 31 (local date)`
+
 #### formatting
 
-ymd-object provides some minimal date formatting options
+`ymd-object` provides some minimal date formatting options
 
 `myDate.toString() // returns "2020-01-31"`
 
