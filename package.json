@@ -1,6 +1,6 @@
 {
   "name": "ymd-object",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "description": "Defines a simple but handy date type called YMD to help you avoid confusing results you may get when using the standard Date object for dates (e.g. new Date(\"2020-01-01\"))",
   "main": "dist/index.js",
   "scripts": {

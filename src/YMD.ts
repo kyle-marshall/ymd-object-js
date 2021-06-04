@@ -1,13 +1,3 @@
-export enum DateFormatStyle {
-    // e.g. "2000-01-31"
-    YMD,
-    // e.g. "01/31/2000"
-    DMY,
-    // e.g. "1/31/2000"
-    DMY_NO_PAD,
-    // e.g. "Mon, 31 Jan 2000"
-    LONG
-}
 
 export type YMDFormatter = (ymd: YMD) => string;
 
@@ -32,6 +22,8 @@ export const DefaultYMDFormatters: Record<DefaultYMDFormatKey, YMDFormatter> = {
     }
 }
 
+const YMD_STRING_PATTERN = /^[1-2][0-9]{3}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))$/;
+const ERR_BAD_YMD_STRING = "Bad YMD string format.";
 
 /** work with just a date without having to think about timezones (and without the bulk of momentjs) */
 export class YMD {
@@ -41,10 +33,11 @@ export class YMD {
     constructor(ymd: string | {y: number, m: number, d: number}) {
         if (ymd == null) return;
         if (typeof ymd == "string") {
-            if (ymd.length === 10) {
-                const [y, m, d] = ymd.split("-").map(v => parseInt(v));
-                Object.assign(this, {y, m, d});
+            if (!YMD_STRING_PATTERN.test(ymd)) {
+                throw new Error(ERR_BAD_YMD_STRING);
             }
+            const [y,m,d] = ymd.split("-").map(v => parseInt(v));
+            Object.assign(this, {y, m, d});
         }
         else {
             Object.assign(this, ymd);

@@ -1,17 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.YMD = exports.DefaultYMDFormatters = exports.DateFormatStyle = void 0;
-var DateFormatStyle;
-(function (DateFormatStyle) {
-    // e.g. "2000-01-31"
-    DateFormatStyle[DateFormatStyle["YMD"] = 0] = "YMD";
-    // e.g. "01/31/2000"
-    DateFormatStyle[DateFormatStyle["DMY"] = 1] = "DMY";
-    // e.g. "1/31/2000"
-    DateFormatStyle[DateFormatStyle["DMY_NO_PAD"] = 2] = "DMY_NO_PAD";
-    // e.g. "Mon, 31 Jan 2000"
-    DateFormatStyle[DateFormatStyle["LONG"] = 3] = "LONG";
-})(DateFormatStyle = exports.DateFormatStyle || (exports.DateFormatStyle = {}));
+exports.YMD = exports.DefaultYMDFormatters = void 0;
 exports.DefaultYMDFormatters = {
     YMD: function (ymd) {
         var y = ymd.y, m = ymd.m, d = ymd.d;
@@ -30,6 +19,8 @@ exports.DefaultYMDFormatters = {
         return utcString.substring(0, utcString.indexOf("00:") - 1);
     }
 };
+var YMD_STRING_PATTERN = /^[1-2][0-9]{3}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))$/;
+var ERR_BAD_YMD_STRING = "Bad YMD string format.";
 /** work with just a date without having to think about timezones (and without the bulk of momentjs) */
 var YMD = /** @class */ (function () {
     function YMD(ymd) {
@@ -39,10 +30,11 @@ var YMD = /** @class */ (function () {
         if (ymd == null)
             return;
         if (typeof ymd == "string") {
-            if (ymd.length === 10) {
-                var _a = ymd.split("-").map(function (v) { return parseInt(v); }), y = _a[0], m = _a[1], d = _a[2];
-                Object.assign(this, { y: y, m: m, d: d });
+            if (!YMD_STRING_PATTERN.test(ymd)) {
+                throw new Error(ERR_BAD_YMD_STRING);
             }
+            var _a = ymd.split("-").map(function (v) { return parseInt(v); }), y = _a[0], m = _a[1], d = _a[2];
+            Object.assign(this, { y: y, m: m, d: d });
         }
         else {
             Object.assign(this, ymd);

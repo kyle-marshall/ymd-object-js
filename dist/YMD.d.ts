@@ -1,9 +1,3 @@
-export declare enum DateFormatStyle {
-    YMD = 0,
-    DMY = 1,
-    DMY_NO_PAD = 2,
-    LONG = 3
-}
 export declare type YMDFormatter = (ymd: YMD) => string;
 declare type DefaultYMDFormatKey = "YMD" | "MDY" | "MDY_NO_PAD" | "LONG";
 export declare const DefaultYMDFormatters: Record<DefaultYMDFormatKey, YMDFormatter>;
