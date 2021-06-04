@@ -1,6 +1,14 @@
-# ymd-object-js
+### Preface
 
-## What's this?
+I recommend using [https://github.com/iamkun/dayjs/](dayjs) for your project.
+
+While I may continue to expand `ymd-object` for fun, I made it as a minimal alternative for one feature that Moment.js made convenient for me. This was before I knew about dayjs.
+
+If you want to use or contribute to `ymd-object` anyways, go right ahead!
+
+---
+
+### What's `ymd-object`?
 
 `ymd-object` is a tiny library which defines a handy class called `YMD` which stores a simple date (no time components).
 
@@ -17,27 +25,39 @@ In many situations it would be nicer to not think about the time components at a
 
 In summary, this package just helps you get the date right.
 
-## How to use it
+---
 
-#### npm install
+### How to use `ymd-object`
+
+<br>
+
+#### install with npm
 
 `npm install ymd-object`
+
+<br>
 
 #### import YMD
 
 `import { YMD } from "ymd-object"`
 
+*or with require*
+
+`const { YMD } = require("ymd-object")`
+
+<br>
+
 #### create a date
 
--- from a ymd string --
+*from a ymd string*
 
 `const myDate = new YMD("2020-01-31");`
 
--- or from a simple object --
+*or from a simple object*
 
 `const myDate = new YMD({y: 2020, m: 1, d: 31})`
 
--- or from a vanilla js Date (optional 2nd parameter utc defaults to true) --
+*or from a vanilla js Date (optional 2nd parameter utc defaults to true)*
 
 `const myDate = YMD.fromDate(someDate) // uses UTC date of someDate`
 
@@ -48,42 +68,55 @@ In summary, this package just helps you get the date right.
 `const myDate = YMD.today() // uses current UTC date`
 `const myDate = YMD.today(false) // uses current local date`
 
+<br>
+
 #### get or set year / month / date
 
-`const { y, m, d } = myDate; // deconstruct a YMD object`
 
-`myDate.y = 1999; // change a YMD object`
+```javascript
+const { y, m, d } = myDate; // deconstruct a YMD object
 
-`myDate.setFromString("1999-10-20") // change date using a string`
+myDate.y = 1999; // change a YMD object
 
-`myDate.setFromDate(someDate) // change date using a vanilla js Date (UTC date)`
+myDate.setFromString("1999-10-20") // change date using a string
 
-`myDate.setFromDate(someDate, false) // change date using a vanilla js Date (local date)`
+myDate.setFromDate(someDate) // change date using a vanilla js Date (UTC date)
+
+myDate.setFromDate(someDate, false) // change date using a vanilla js Date (local date)
+```
+
+<br>
 
 #### convert to a vanilla js Date (set at midnight UTC unless optional utc param is false)
 
-`myDate.toDate() // 2020-01-31T00:00:00.000Z`
+```javascript
+myDate.toDate() // 2020-01-31T00:00:00.000Z
 
-`myDate.toDate().getUTCDate() // 31`
+myDate.toDate().getUTCDate() // 31
 
-`myDate.toDate(false) // 2020-01-31T08:00:00.000Z (for me; depends on time zone)`
+myDate.toDate(false) // 2020-01-31T08:00:00.000Z (for me; depends on time zone)
 
-`myDate.toDate(false).getDate() // 31 (local date)`
+myDate.toDate(false).getDate() // 31 (local date)
+```
+
+<br>
 
 #### formatting
 
 `ymd-object` provides some minimal date formatting options
 
-`myDate.toString() // returns "2020-01-31"`
+```javascript
+myDate.toString() // returns "2020-01-31"
 
-`myDate.toString("MDY") // returns "01/31/2020"`
+myDate.toString("MDY") // returns "01/31/2020"
 
-`myDate.toString("MDY_NO_PAD") // returns "1/31/2020"`
+myDate.toString("MDY_NO_PAD") // returns "1/31/2020"
 
-`myDate.toString("LONG") // returns "Fri, 31 Jan 2020"`
+myDate.toString("LONG") // returns "Fri, 31 Jan 2020"
+```
 
 You can also simply combine the static "from" methods with the "toString" method if you don't want to keep the YMD object around:
 
 `YMD.fromString("2020-01-31").toString("LONG") // returns "Fri, 31 Jan 2020"`
 
-The formatting feature may be expanded in the future.
+The formatting feature may be expanded in the future to allow formatting with special strings to define the format e.g. maybe you are weird and like hashtags instead of dashes so you use `myDate.toString("YYYY#MM#DD")`.
